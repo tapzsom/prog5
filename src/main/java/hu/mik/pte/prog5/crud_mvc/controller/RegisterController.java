@@ -9,7 +9,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.stereotype.Controller;
@@ -32,21 +31,33 @@ public class RegisterController {
     @GetMapping("/register")
     public String registerForm(Model model) {
         model.addAttribute("registerForm", new RegisterForm());
-        return "/register";
+        return "register";
     }
 
     @PostMapping("/register")
     public String register(@ModelAttribute("registerForm") RegisterForm registerForm, BindingResult bindingResult, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
 
-        //TODO validations (exists,confirmPassword)
+        if (!registerForm.getPassword().equals(registerForm.getConfirmPassword())) {
+            bindingResult.rejectValue("confirmPassword", "mismatch", "Passwords do not match");
+        }
+
+        if (this.userDetailsService.exists(registerForm.getUsername())) {
+            bindingResult.rejectValue("username", "taken", "Username already exists");
+        }
+
+        if (bindingResult.hasErrors()) {
+            return "register";
+        }
+
         this.userDetailsService.register(registerForm.getUsername(), registerForm.getPassword());
         UserDetails userDetails = this.userDetailsService.loadUserByUsername(registerForm.getUsername());
         Authentication auth = UsernamePasswordAuthenticationToken
                 .authenticated(userDetails, null, userDetails.getAuthorities());
+
         SecurityContext context = SecurityContextHolder.createEmptyContext();
         context.setAuthentication(auth);
         SecurityContextHolder.setContext(context);
-        this.securityContextRepository.saveContext(context,httpServletRequest,httpServletResponse);
+        this.securityContextRepository.saveContext(context, httpServletRequest, httpServletResponse);
         return "redirect:/cars";
 
 
