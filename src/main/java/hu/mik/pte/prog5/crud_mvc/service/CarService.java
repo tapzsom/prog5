@@ -2,9 +2,18 @@ package hu.mik.pte.prog5.crud_mvc.service;
 
 import hu.mik.pte.prog5.crud_mvc.model.Car;
 import jakarta.annotation.PostConstruct;
+import jakarta.annotation.security.RolesAllowed;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PostFilter;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.access.prepost.PreFilter;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -35,6 +44,7 @@ public class CarService {
         car.setMake(make);
         car.setModel(model);
         car.setManufactureYear(manufactureYear);
+        car.setOwner("user");
         return car;
     }
 
@@ -46,8 +56,19 @@ public class CarService {
         return car;
     }
 
+    //    @PreAuthorize("hasRole('ADMIN')")
+//    @PostAuthorize("hasRole('ADMIN')")
+//    @PreFilter("hasRole('ADMIN')")
+//    @PostFilter("filterObject.owner == authentication.name or hasRole('ADMIN') or hasAuthority('EDIT_FORM')")
+//    @Secured("ROLE_ADMIN")
+//    @RolesAllowed("ADMIN")
+//    @PreAuthorize("hasRole('ADMIN')")
     public Collection<Car> list() {
-        return this.carList.values();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        var authorities = auth.getAuthorities();
+
+        return new ArrayList<>(this.carList.values());
     }
 
     public Car findById(Long id) {

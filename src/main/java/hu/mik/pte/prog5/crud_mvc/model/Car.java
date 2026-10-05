@@ -18,11 +18,13 @@ public class Car {
     @NotNull()
     @Min(value = 1950, message = "Nem lehet 1950 előtti")
     Integer manufactureYear;
+    String owner;
 
-   public Car(String make, String model, int year) {
+   public Car(String make, String model, int year,String owner) {
         this.make = make;
         this.model = model;
         this.manufactureYear = year;
+        this.owner=owner;
     }
 
 }
