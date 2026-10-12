@@ -1,9 +1,18 @@
 spring:
   application:
     name: crud-mvc
-  mvc:
-    view:
-      prefix: /WEB-INF/views/
-      suffix: .jsp
+  profiles:
+    active: plain
+  thymeleaf:
+    # templates are read from classpath:/templates/*.html by default
+    cache: false
+  messages:
+    basename: messages
+    fallback-to-system-locale: false
+
+#  mvc:
+#    view:
+#      prefix: /WEB-INF/views/
+#      suffix: .jsp
 server:
   port: 8090

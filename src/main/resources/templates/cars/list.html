@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{layout :: head('Cars')}"></head>
+<body>
+<header th:replace="~{layout::header}"></header>
+<div class="top-bar">
+    <h1 th:text="'Cars'">Cars</h1>
+    <a class="button" th:href="@{/cars/new}" th:text="'New Car'">+ New car</a>
+
+</div>
+
+<table>
+    <thead>
+    <tr>
+        <th th:text="'Make'"></th>
+        <th th:text="'Model'"></th>
+        <th th:text="'ManufactureYear'"></th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="car : ${cars}">
+        <td th:text="${car.make}"></td>
+        <td th:text="${car.model}"></td>
+        <td th:text="${car.manufactureYear}"></td>
+        <td class="actions">
+                            <a class="button" th:href="@{/cars/{valami}/edit(valami=${car.id})}">Edit</a>
+                        <!--            TODO delete-->
+                            <form th:action="@{/cars/{id}/delete(id=${car.id})}" method="post"
+                                  onsubmit="return confirm('Delete this car?');">
+                                <button type="submit" class="danger">Delete</button>
+                            </form>
+                        </td>
+    </tr>
+    <tr th:if="${cars.isEmpty()}">
+        <td colspan="4" th:text="'A lista üres'"></td>
+    </tr>
+
+<!--    <c:forEach var="car" items="${cars}">-->
+<!--        <tr>-->
+<!--            <td>${car.id}</td>-->
+<!--            <td>${car.make}</td>-->
+<!--            <td>${car.model}</td>-->
+<!--            <td>${car.manufactureYear}</td>-->
+<!--            <td class="actions">-->
+<!--                <a class="button" href="${pageContext.request.contextPath}/cars/${car.id}/edit">Edit</a>-->
+<!--                <form action="${pageContext.request.contextPath}/cars/${car.id}/delete" method="post"-->
+<!--                      onsubmit="return confirm('Delete this car?');">-->
+<!--                    <button type="submit" class="danger">Delete</button>-->
+<!--                </form>-->
+<!--            </td>-->
+<!--        </tr>-->
+<!--    </c:forEach>-->
+<!--    <c:if test="${empty cars}">-->
+<!--        <tr>-->
+<!--            <td colspan="5">No cars yet.</td>-->
+<!--        </tr>-->
+<!--    </c:if>-->
+    </tbody>
+</table>
+<footer th:replace="~{layout :: footer}">
+
+</footer>
+</body>
+</html>

@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<body>
+
+<div  th:fragment="field(name, label,type)" class="field">
+    <label th:for="${name}" th:text="${label}"></label>
+    <input th:type="${type}" th:field="*{__${name}__}"/>
+    <span class="error" th:errors="*{__${name}__}"></span>
+</div>
+</body>
+</html>

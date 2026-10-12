@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+
+<head th:fragment="head(title)">
+    <meta charset="UTF-8">
+    <title th:text="${title}"></title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+<header th:fragment="header" class="nav">
+    <nav>
+        <a href="?lang=hu">HU</a>
+        <a href="?lang=en">EN</a>
+        <form method="get">
+            <select name="lang" id="lang" onchange="this.form.submit()">
+                <option value="hu" th:text="#{locale.hu}" th:selected="${#locale.language == 'hu'}"></option>
+                <option value="en" th:text="#{locale.en}" th:selected="${#locale.language == 'en'}"></option>
+            </select>
+        </form>
+        <th:block sec:authorize="isAuthenticated()">
+            <span sec:authentication="name"></span>
+            <form th:action="@{/logout}" method="post" class="inline">
+                <button type="submit" th:text="'Logout'"></button>
+            </form>
+        </th:block>
+    </nav>
+</header>
+<footer th:fragment="footer" class="footer">
+    <span th:text="#{app.footer}">footer</span>
+</footer>
+</body>
+</html>
