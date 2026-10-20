@@ -11,7 +11,7 @@ import lombok.*;
 @RequiredArgsConstructor
 public class Car {
     Long id;
-    @NotBlank(message = "Nem lehet üres")
+    @NotBlank(message = "{validation.notBlank}")
     String make;
     @NotBlank(message = "Nem lehet üres")
     String model;

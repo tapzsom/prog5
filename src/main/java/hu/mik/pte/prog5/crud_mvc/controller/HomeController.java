@@ -3,7 +3,7 @@ package hu.mik.pte.prog5.crud_mvc.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
-@Controller
+//@Controller
 public class HomeController {
 
     @GetMapping("/")
