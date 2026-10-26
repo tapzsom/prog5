@@ -1,0 +1,10 @@
+services:
+  app:
+    build: .
+    image: crud-mvc:latest
+    container_name: crud-mvc
+    ports:
+      - "8090:8090"
+    environment:
+      SPRING_PROFILES_ACTIVE: mock
+    restart: unless-stopped
